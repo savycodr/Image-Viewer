@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image Viewer</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Animal Search</h1>
+
+    <!-- Images will get dumped here -->
+    <div id="animal-view"></div>
+
+    <div> 
+        <button id="catButton"> cats </button>
+    </div>
+
+    <div id="catDisplay">
+
+    </div>
+<br>
+<br>
+<br>
+    <form id="animal-form">
+        <label for="animal-input">Add an animal</label>
+        <input type="text" id="animal-input"><br>
+
+        <!-- Button triggers new movie to be added -->
+        <input id="add-animal" type="submit" value="Add an animal">
+    </form>
+  </div>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
+  
+</body>
+
+</html>
