@@ -266,7 +266,10 @@ $(document).on("click", "#returnToSearch", function(event) {
 function populateFavorites(){
   var favorites1 = [];
   var list = localStorage.getItem("favorites");
-  favorites1 = list.split(",");
+  if (list !== null )
+  {
+    favorites1 = list.split(",");
+  }
   return favorites1;
 };
 
@@ -277,6 +280,8 @@ function displayFavorites()
 
   // get the favorites from local storage
   var favGifs = localStorage.getItem("favorites");
+  console.log("THIS SHOULD BE EMPTY["+ favGifs+"]");
+
   // create a url to get the favorites
   var favQueryURL = "https://api.giphy.com/v1/gifs?api_key=xTa0qr0MAiqCvVgseueh2yCaBpml6y6h&ids=" + favGifs;
   console.log("your favorites  query are " + favQueryURL);
@@ -322,6 +327,10 @@ $(document).on("click", ".deleteButton", function(event) {
     localStorage.setItem("favorites", stringFavs);
 
     displayFavorites();
+  } else if ( favorites.length === 0)
+  {
+    $("#favorite-animal-view").empty();
+    localStorage.setItem("favorites", "");
   }
 
 });
