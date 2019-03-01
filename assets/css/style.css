@@ -18,7 +18,7 @@ h1{
    margin-bottom: 5px;
 }
 
-#animal-form{
+.animal-form{
     margin-bottom: 15px;
     padding-top: 15px;
 }
@@ -43,4 +43,8 @@ h1{
 
 .card-title{
     margin-bottom: 5px;
+}
+
+p.card-text{
+    margin-bottom: 3px;
 }

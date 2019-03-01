@@ -1,10 +1,16 @@
+$(document).ready(function() 
+{
 // the initial animal buttons
 var animals = ["cat", "pig", "dog"];
 console.log("calling renderButton");
-// an counter for total numer of gifs added (helps for making rows in html)
-var numOfGifs = 0;
-// keep track of the current row we are writing to
-var row;
+// an array of ids of favorite gifs
+var favorites = populateFavorites();
+
+// hide the favorites screen
+$("#favorite-animal-view").hide();
+$("#return-column").hide();
+
+
 renderButtons();
 
 // this function displays the gifs if the animal button is pushed
@@ -18,11 +24,26 @@ function displayAnimalGifs() {
   // make a call to  Giphy API asking for ten datasets for animal
   var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=xTa0qr0MAiqCvVgseueh2yCaBpml6y6h&q=" + animal + "&limit=10&offset=0&rating=G&rating=PG&lang=en";
 
+  // call display gifs false means as a search display not as a favorites display
+  displayGifs(queryURL, "false");
+};
+
+// can we make this a function to share with  display favorites?
+
+function displayGifs(queryURL, isFavorite){
+
   $.ajax({
     url: queryURL,
     method: "GET"
   }).then(function (response) {
     console.log(response);
+
+    // an counter for total numer of gifs added (helps for making rows in html)
+    var numOfGifs = 0;
+
+    // keep track of the current row we are writing to
+    var currentRow;
+
 
     //write the data to an array
     var results = response.data;
@@ -50,15 +71,22 @@ function displayAnimalGifs() {
       //create a row every three images
       if (numOfGifs%3 === 0) {
         console.log("creating row " + i);
-        row = $("<div>");
-        row.attr("class", "row image-row");
-        // write to animal-view
-        $("#animal-view").prepend(row);
+        currentRow = $("<div>");
+        currentRow.attr("class", "row image-row");
+
+        if (isFavorite === "true")
+        {
+          // write to animal-view
+          $("#favorite-animal-view").append(currentRow);
+        }
+        else{
+          $("#animal-view").prepend(currentRow);
+        }
       }
       // create a column
       var col = $("<div>");
       col.attr("class", "col-md-4");
-      row.append(col);
+      currentRow.append(col);
 
       // create a card
       var card = $("<div>");
@@ -70,7 +98,6 @@ function displayAnimalGifs() {
       stillImage.attr("src", stillUrl);
       stillImage.attr("data-state", isStatic);
       stillImage.attr("class", "animalImage card-img-top");
-
 
       // Save this data for later
       stillImage.attr("data-stillUrl", stillUrl);
@@ -90,9 +117,27 @@ function displayAnimalGifs() {
       cardText.attr("class", "card-text");
       cardText.text("Rating: " + gifRating);
       body.append(cardText);
-      // increase the numbe rof gifs displayed
+      var aButton = $("<a>");
+      aButton.attr("data-id", results[i].id);
+      console.log("the id is " + results[i].id);
+      aButton.attr("href", "#");
+
+      // if this is in the normal display, create a add button
+      if (isFavorite === "false")
+      {
+        aButton.attr("class", "btn btn-secondary btn-sm favoriteButton");
+        aButton.html("&#10003 Add to Favorites");
+      } else
+      // if this is the favorite display, create a delete button
+      {
+        aButton.attr("class", "btn btn-secondary btn-sm deleteButton");
+        //var delButtonLabel = "<i class=\"fa fa-close\" style=\"font-size:36px\"></i>";
+        var delButtonLabel = "X Delete from Favorites";
+        aButton.html(delButtonLabel);
+      }
+      body.append(aButton);
+      // increase the number of gifs displayed
       numOfGifs++;
-      
       
     };
 
@@ -133,7 +178,7 @@ $("#add-animal").on("click", function (event) {
   // Check that the user input is not blank
   console.log("animal entered " + userAnimal);
   if (userAnimal !== "") {
-    // add to te  animals array
+    // add to the  animals array
     animals.push(userAnimal);
     // clear the input field
     $("#animal-input").val("");
@@ -149,18 +194,137 @@ function renderButtons() {
   for (var i = 0; i < animals.length; i++) {
     var animal = animals[i];
     // create a new button 
-    var aButton = $("<button>");
+    var aniButton = $("<button>");
     // give the button a label with the animal the user input
-    aButton.text(animal);
+    aniButton.text(animal);
     // set the class so that we know a listener will be applied
-    aButton.attr("class", "animalButton btn btn btn-success");
+    aniButton.attr("class", "animalButton btn btn btn-success");
     // set the animal into the buttons data
-    aButton.attr("data-animal", animal);
+    aniButton.attr("data-animal", animal);
     // append to the buttonsDiv
-    $("#buttonsDiv").append(aButton);
+    $("#buttonsDiv").append(aniButton);
 
   }
+
   // Listen to the buttons with the animal on it
   $(".animalButton").on("click", displayAnimalGifs);
 
 }
+
+// listen to the favorite button to add to favorites and local storage
+  $(document).on("click", ".favoriteButton", function(event) {
+  event.preventDefault();
+
+  // grab a unique identifier that was stored in the button and save to array
+  var favID = $(this).attr("data-id");
+
+  // check whether the id is already in the favorites array
+  var isDuplicate = favorites.includes(favID);
+  // If the favorite is not already in the array
+  if (!isDuplicate){
+    favorites.push(favID);
+    var stringFavs = "";
+    // put array into local storage
+    // var stringFavs = JSON.stringify(favorites);
+    for (var i=0; i<favorites.length - 1; i++)
+    {
+      stringFavs = stringFavs + favorites[i] + ",";
+    }
+    stringFavs = stringFavs + favorites[favorites.length - 1];
+
+    console.log("stringify favorites " + stringFavs);
+    // need to remove the quotes and the brackets
+    localStorage.setItem("favorites", stringFavs);
+  }
+});
+
+// listen to the show favorites button to change display to favorites and local storage
+$(document).on("click", "#show-favorites", function(event) {
+    event.preventDefault();
+    $("#left-column").hide();
+    $("#return-column").show();
+    $("#animal-view").hide();
+    $("#favorite-animal-view").show();
+    console.log("calling displayFavorites");
+    displayFavorites();
+
+});
+
+// listen to the show favorites button to change display to favorites and local storage
+$(document).on("click", "#returnToSearch", function(event) {
+  event.preventDefault();
+  $("#left-column").show();
+  $("#return-column").hide();
+  $("#animal-view").show();
+  $("#favorite-animal-view").hide();
+  console.log("calling return to search");
+  //displayFavorites();
+
+});
+
+// parses the comma separated string stored in localStorage and returns an array
+function populateFavorites(){
+  var favorites1 = [];
+  var list = localStorage.getItem("favorites");
+  favorites1 = list.split(",");
+  return favorites1;
+};
+
+// display favorites
+function displayFavorites()
+{
+  $("#favorite-animal-view").empty(); // empties out the html
+
+  // get the favorites from local storage
+  var favGifs = localStorage.getItem("favorites");
+  // create a url to get the favorites
+  var favQueryURL = "https://api.giphy.com/v1/gifs?api_key=xTa0qr0MAiqCvVgseueh2yCaBpml6y6h&ids=" + favGifs;
+  console.log("your favorites  query are " + favQueryURL);
+  
+  // need some code reuse here will call nearly the same as display animal gifs
+  // how to display in a new window?
+  displayGifs(favQueryURL, "true");
+};
+
+// listen to the delete button to delete from favorites and local storage
+$(document).on("click", ".deleteButton", function(event) {
+  
+  event.preventDefault();
+
+  // grab a unique identifier that was stored in the button and save to array
+  var favID = $(this).attr("data-id");
+
+  //  get favorites from localstorage
+  // need to delete this instance off the array of favorites
+  for( var i = 0; i < favorites.length; i++){ 
+    if ( favorites[i] === favID) {
+      favorites.splice(i, 1); 
+    }
+  }
+  console.log("delete has been clicked, remaining favorites are "  + favorites);
+
+  var stringFavs = "";
+  // put array into local storage
+  // var stringFavs = JSON.stringify(favorites);
+
+  // lets make sure the favorites isn't empty now
+  if (favorites.length > 0)
+  {
+    // Build up the query string
+    for (var i=0; i<favorites.length - 1; i++)
+    {
+      stringFavs = stringFavs + favorites[i] + ",";
+    }
+    stringFavs = stringFavs + favorites[favorites.length - 1];
+
+    console.log("stringify favorites " + stringFavs);
+    // need to remove the quotes and the brackets
+    localStorage.setItem("favorites", stringFavs);
+
+    displayFavorites();
+  }
+
+});
+
+
+});

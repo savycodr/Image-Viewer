@@ -18,7 +18,9 @@
         <div class="col-md-3" id="left-column">
           <div class="sticky-top">
             <!--Form is here-->
-            <form id="animal-form ">
+            <button id="show-favorites" class="btn btn-secondary my-md-2 my-sm-2"> Show Favorites</button>
+            <form class="animal-form ">
+              <!-- Button triggers show favorites -->
               <label for="animal-input ">Add an animal</label>
               <input type="text" id="animal-input" class="form-control">
               <!-- Button triggers new animal to be added -->
@@ -29,10 +31,22 @@
             <div id="buttonsDiv"></div>
           </div> <!-- end of sticky-top-->
         </div> <!--end of column-->
+
+        <div class="col-md-3" id="return-column">
+          <div class="sticky-top">
+            <!--Form is here-->
+            <form class="return-form ">
+              <button id="returnToSearch"  class="btn btn-secondary my-md-2 my-sm-2"> Return to Search</button>
+              <!-- Button triggers show favorites -->
+            </form>
+          </div> <!-- end of sticky-top-->
+        </div> <!--end of column-->
+
     
       <div class="col-md-9">
         <!-- Images will get dumped here -->
         <div id="animal-view"></div>
+        <div id="favorite-animal-view">hi</div>
       </div> <!--end of 9 column-->
 
     </div> <!--end of row-->
