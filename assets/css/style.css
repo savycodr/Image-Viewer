@@ -5,12 +5,33 @@ body{
 }
 
 h1{
-    border-bottom: solid 5px #2E873B;
-    background-color: #182459;
-    color: #ffffff; 
+    /* border-bottom: solid 5px #2E873B;
+    background-color: #182459; 
+    color: #ffffff; */
     font-family: 'Permanent Marker', cursive;
     letter-spacing: 2px;
-    margin-bottom: 10px;
+    margin-bottom: 0px; 
+}
+
+p{
+    margin-bottom: 5px; 
+}
+
+#show-favorites{
+    margin-top: 10px; 
+}
+
+#returnToSearch{
+    margin-top: 10px; 
+}
+
+#headContainer{
+    color: #ffffff; 
+    background-color: #182459;
+    padding: 0;
+    border-bottom: solid 5px #2E873B;
+    text-align: center;
+
 }
 
 .animalButton {

@@ -12,15 +12,19 @@
 </head>
 
 <body>
-  <h1 class="text-center py-3 mx-md-0"><i class="fas fa-paw"></i>  Animal Search</h1>
+  <div class="container-fluid" id="headContainer">
+    <h1 class="text-center py-3 mx-md-0"><i class="fas fa-paw"></i>  Animal Search</h1>
+    <p>Click on one of the green buttons to see 10 images of that animal. You can add your own  button too.</p>
+  </div>
+
   <div class="container-fluid">
     <div class="row">
         <div class="col-md-3" id="left-column">
           <div class="sticky-top">
+            <!-- Button triggers show favorites -->
+            <button id="show-favorites" class="btn btn-secondary my-md-2 my-sm-2"><i class="far fa-star"></i> Show Favorites</button>
             <!--Form is here-->
-            <button id="show-favorites" class="btn btn-secondary my-md-2 my-sm-2"> Show Favorites</button>
             <form class="animal-form ">
-              <!-- Button triggers show favorites -->
               <label for="animal-input ">Add an animal</label>
               <input type="text" id="animal-input" class="form-control">
               <!-- Button triggers new animal to be added -->
@@ -36,8 +40,7 @@
           <div class="sticky-top">
             <!--Form is here-->
             <form class="return-form ">
-              <button id="returnToSearch"  class="btn btn-secondary my-md-2 my-sm-2"> Return to Search</button>
-              <!-- Button triggers show favorites -->
+              <button id="returnToSearch"  class="btn btn-secondary my-md-2 my-sm-2"><i class="fas fa-arrow-left"></i> Return to Search</button>
             </form>
           </div> <!-- end of sticky-top-->
         </div> <!--end of column-->
