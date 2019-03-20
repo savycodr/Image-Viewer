@@ -18,4 +18,6 @@ This is an application that displays images from a call to the Giphy API. A quer
 
 * A AJAX request is made to the Giphy API server. The data is returned in JSON format.
 
+* Utilizes Bootstrap CSS library. Uses Icons from Font Awesome library. Uses a font called Permanent Marker from Google Fonts.
+
 * The application is mobile responsive. It is fun to play on a tablet or phone.
